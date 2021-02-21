@@ -18,6 +18,7 @@ public class UpGradeButton : MonoBehaviour
     //게임시작할때 골드업그레이드
     public int startGoldByUpgrade;
 
+    [HideInInspector]
     //아이템을 구매할때 가격
     public int currentCost = 1;
 
@@ -45,22 +46,22 @@ public class UpGradeButton : MonoBehaviour
         goldByUpgrade = startGoldByUpgrade;
         */
         //게임시작할때 업그레이드 버튼에 저장된 자신의 데이타를 불러옴. 저장은 밑에 구매했을때
-        DataController.GetInstance().LoadUpgradeButton(this);
+        DataController.Instance.LoadUpgradeButton(this);
         UpdateUI();
     }
 
     public void PurchaseUpgrade()
     {
-        if (DataController.GetInstance().GetGold() >= currentCost)
+        if (DataController.Instance.gold >= currentCost)
         {
-            DataController.GetInstance().SubGold(currentCost);
+            DataController.Instance.gold -= currentCost;
             level++;
-            DataController.GetInstance().AddGoldPerClick(goldByUpgrade);
+            DataController.Instance.goldPerClick += goldByUpgrade;
 
             UpdateUpgrade();
             UpdateUI();
             //구매와 동시에 자신의 데이타를 저장함.
-            DataController.GetInstance().SaveUpgradeButton(this);
+            DataController.Instance.SaveUpgradeButton(this);
         }
     }
 
@@ -73,6 +74,6 @@ public class UpGradeButton : MonoBehaviour
 
     public void UpdateUI()
     {
-        upgradeDisplay.text = upGradeName + "\nCost:" + currentCost + "\nLevel:" + level + "\nNext GoldPerClick:" + goldByUpgrade;
+        upgradeDisplay.text = upGradeName + "\nCost:" + currentCost + "\nLevel:" + level + "\nNext New GoldPerClick:" + goldByUpgrade;
     }
 }

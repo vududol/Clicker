@@ -6,11 +6,10 @@ public class ClickButton : MonoBehaviour
 {
     //public DataController datacontroller;
 
-    public void OnClick()
+    public void OnMouseDown()
     {
         //gold += goldPerClick;
-        int goldPerClick = DataController.GetInstance().GetGoldPerClick();
-        DataController.GetInstance().AddGold(goldPerClick);
+        DataController.Instance.gold += DataController.Instance.goldPerClick;
 
     }
 }

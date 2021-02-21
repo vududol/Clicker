@@ -8,39 +8,75 @@ public class DataController : MonoBehaviour
     //어디서든 불러오는 싱글턴을 만듬
     private static DataController instance;
 
-    public static DataController GetInstance()
+    public static DataController Instance
     {
-        if (instance == null)
+        get
         {
-            instance = FindObjectOfType<DataController>();
-
             if (instance == null)
             {
-                GameObject container = new GameObject("DataController");
+                instance = FindObjectOfType<DataController>();
 
-                instance = container.AddComponent<DataController>();
+                if (instance == null)
+                {
+                    GameObject container = new GameObject("DataController");
+
+                    instance = container.AddComponent<DataController>();
+                }
             }
+            return instance;
         }
-        return instance;
     }
 
-    private int m_gold = 0;
 
-    private int m_goldPerClick = 0;
+    public int goldPerClick
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("GoldPerClick" ,1);
+
+        }
+
+        set
+        {
+            PlayerPrefs.SetInt("GoldPerClick", value);
+        }
+    }
 
     //아이템버튼을 다 가져옴
     private ItemButton[] itemButtons;
 
+
+
+    public long gold
+    {
+        get
+        {
+            if(!PlayerPrefs.HasKey("Gold"))
+            {
+                return 0;
+            }
+
+            string tmpGold =  PlayerPrefs.GetString("Gold");
+            return long.Parse(tmpGold);
+        }
+        set
+        {
+            PlayerPrefs.SetString("Gold", value.ToString());
+        }
+    }
+
     //저장된거 불러오기
     void Awake()
     {
-        m_gold = PlayerPrefs.GetInt("Gold");
-        m_goldPerClick = PlayerPrefs.GetInt("GoldPerClick", 1);
+        //저장된 모든데이타를 초기화시키는문장
+        //PlayerPrefs.DeleteAll();
+        //m_gold = PlayerPrefs.GetInt("Gold");
+        //m_goldPerClick = PlayerPrefs.GetInt("GoldPerClick", 1);
 
         itemButtons = FindObjectsOfType<ItemButton>();
     }
 
-
+    /*
     //저장하기
     public void SetGold(int newGold)
     {
@@ -67,23 +103,26 @@ public class DataController : MonoBehaviour
     {
         return m_gold;
     }
-
-    public int GetGoldPerClick()
-    {
-        return m_goldPerClick;
-    }
-
+         
     public void SetGoldPerClick(int newGoldPerClick)
     {
         m_goldPerClick = newGoldPerClick;
         PlayerPrefs.SetInt("GoldPerClick", m_goldPerClick);
     }
 
+ 
     public void AddGoldPerClick(int newGoldPerClick)
     {
         m_goldPerClick += newGoldPerClick;
         SetGoldPerClick(m_goldPerClick);
     }
+
+        public int GetGoldPerClick()
+    {
+        return m_goldPerClick;
+    }
+
+    */
 
     public void LoadUpgradeButton(UpGradeButton upGradeButton)
     {
